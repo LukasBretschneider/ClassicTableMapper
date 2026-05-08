@@ -1,0 +1,26 @@
+baseTable_name,name,description
+MARA,MATNR,Material Number
+MARA,MAKTX,Material Description
+MARA,MEINS,Base Unit of Measure
+MARA,MTART,Material Type
+MARA,MATKL,Material Group
+MARA,ERSDA,Creation Date
+MARA,ERNAM,Created By
+MARA,LAEDA,Last Change Date
+MARC,MATNR,Material Number
+MARC,WERKS,Plant
+MARC,DISGR,MRP Group
+MARC,DISPO,MRP Controller
+MARC,LGPRO,Issue Storage Location
+MARC,PLIFZ,Planned Delivery Time
+EKKO,EBELN,Purchasing Document Number
+EKKO,BUKRS,Company Code
+EKKO,LIFNR,Supplier
+EKKO,BEDAT,Document Date
+EKKO,EKORG,Purchasing Organization
+EKKO,EKGRP,Purchasing Group
+BKPF,BELNR,Accounting Document Number
+BKPF,BUKRS,Company Code
+BKPF,GJAHR,Fiscal Year
+BKPF,BLDAT,Document Date
+BKPF,BUDAT,Posting Date

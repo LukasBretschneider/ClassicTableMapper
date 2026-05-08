@@ -1,0 +1,5 @@
+name,description,applicationComponent,isReleased,releaseContract,c1Status
+I_Product,Product basic data view,LO-MD-MM,true,C1,Both
+I_MaterialPlant,Material plant data view,LO-MD-MM,true,C1,Key-User
+I_PurchasingDocument,Purchasing document view,MM-PUR,true,C0,
+I_JournalEntry,Journal entry view,FI-GL,false,None,

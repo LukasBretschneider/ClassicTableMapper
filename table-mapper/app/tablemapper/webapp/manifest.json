@@ -1,0 +1,143 @@
+{
+    "_version": "1.8.0",
+    "sap.app": {
+        "id": "tablemapper",
+        "type": "application",
+        "title": "Classic Table Mapper",
+        "description": "Find successor CDS Views for SAP database tables",
+        "dataSources": {
+            "mainService": {
+                "uri": "/tablemapper/",
+                "type": "OData",
+                "settings": {
+                    "odataVersion": "4.0"
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "fullWidth": true,
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.96.0",
+            "libs": {
+                "sap.ui.core": {},
+                "sap.fe.templates": {}
+            }
+        },
+        "models": {
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "synchronizationMode": "None",
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true,
+                    "groupId": "$direct"
+                }
+            }
+        },
+        "routing": {
+            "routes": [
+                {
+                    "name": "MappingOverviewListRoute",
+                    "target": "MappingOverviewListTarget",
+                    "pattern": ":?query:"
+                },
+                {
+                    "name": "MappingOverviewDetailsRoute",
+                    "target": "MappingOverviewDetailsTarget",
+                    "pattern": "MappingOverview({key}):?query:"
+                },
+                {
+                    "name": "mappedFieldsRoute",
+                    "target": "mappedFieldsTarget",
+                    "pattern": "MappingOverview({key})/mappedFields({key2}):?query:"
+                },
+                {
+                    "name": "baseFieldsRoute",
+                    "target": "baseFieldsTarget",
+                    "pattern": "MappingOverview({key})/baseFields({key2}):?query:"
+                },
+                {
+                    "name": "successorFieldsRoute",
+                    "target": "successorFieldsTarget",
+                    "pattern": "MappingOverview({key})/successorFields({key2}):?query:"
+                }
+            ],
+            "targets": {
+                "MappingOverviewListTarget": {
+                    "type": "Component",
+                    "id": "MappingOverviewListTarget",
+                    "name": "sap.fe.templates.ListReport",
+                    "options": {
+                        "settings": {
+                            "contextPath": "/MappingOverview",
+                            "initialLoad": true,
+                            "variantManagement": "Page",
+                            "navigation": {
+                                "MappingOverview": {
+                                    "detail": {
+                                        "route": "MappingOverviewDetailsRoute"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "MappingOverviewDetailsTarget": {
+                    "type": "Component",
+                    "id": "MappingOverviewDetailsTarget",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "contextPath": "/MappingOverview",
+                            "navigation": {
+                                "mappedFields":    { "detail": { "route": "mappedFieldsRoute"    } },
+                                "baseFields":      { "detail": { "route": "baseFieldsRoute"      } },
+                                "successorFields": { "detail": { "route": "successorFieldsRoute" } }
+                            }
+                        }
+                    }
+                },
+                "mappedFieldsTarget": {
+                    "type": "Component",
+                    "id": "mappedFieldsTarget",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": { "contextPath": "/MappingOverview/mappedFields" }
+                    }
+                },
+                "baseFieldsTarget": {
+                    "type": "Component",
+                    "id": "baseFieldsTarget",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": { "contextPath": "/MappingOverview/baseFields" }
+                    }
+                },
+                "successorFieldsTarget": {
+                    "type": "Component",
+                    "id": "successorFieldsTarget",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": { "contextPath": "/MappingOverview/successorFields" }
+                    }
+                }
+            }
+        }
+    },
+    "sap.fiori": {
+        "registrationIds": [],
+        "archeType": "transactional"
+    }
+}
