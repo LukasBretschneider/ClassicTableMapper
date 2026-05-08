@@ -1,0 +1,15 @@
+baseTable_name,successorEntity_name,baseField,successorField
+MARA,I_Product,MATNR,Product
+MARA,I_Product,MAKTX,ProductName
+MARA,I_Product,MEINS,BaseUnit
+MARA,I_Product,MTART,MaterialType
+MARA,I_Product,MATKL,MaterialGroup
+MARC,I_MaterialPlant,MATNR,Product
+MARC,I_MaterialPlant,WERKS,Plant
+MARC,I_MaterialPlant,DISGR,MRPGroup
+EKKO,I_PurchasingDocument,EBELN,PurchasingDocument
+EKKO,I_PurchasingDocument,BUKRS,CompanyCode
+EKKO,I_PurchasingDocument,LIFNR,Supplier
+BKPF,I_JournalEntry,BELNR,AccountingDocument
+BKPF,I_JournalEntry,BUKRS,CompanyCode
+BKPF,I_JournalEntry,GJAHR,FiscalYear

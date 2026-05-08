@@ -1,0 +1,27 @@
+successorEntity_name,name,description
+I_Product,Product,Product (Material Number)
+I_Product,ProductName,Product Description
+I_Product,BaseUnit,Base Unit of Measure
+I_Product,MaterialType,Material Type
+I_Product,MaterialGroup,Material Group
+I_Product,CreationDate,Creation Date
+I_Product,ProductOldID,Old Material Number
+I_Product,GrossWeight,Gross Weight
+I_MaterialPlant,Product,Product (Material Number)
+I_MaterialPlant,Plant,Plant
+I_MaterialPlant,MRPGroup,MRP Group
+I_MaterialPlant,MRPType,MRP Type
+I_MaterialPlant,PlannedDeliveryDuration,Planned Delivery Duration
+I_PurchasingDocument,PurchasingDocument,Purchasing Document Number
+I_PurchasingDocument,CompanyCode,Company Code
+I_PurchasingDocument,Supplier,Supplier
+I_PurchasingDocument,PurchasingDocumentDate,Purchasing Document Date
+I_PurchasingDocument,PurchasingOrganization,Purchasing Organization
+I_PurchasingDocument,PurchasingGroup,Purchasing Group
+I_PurchasingDocument,DocumentCurrency,Document Currency
+I_JournalEntry,AccountingDocument,Accounting Document Number
+I_JournalEntry,CompanyCode,Company Code
+I_JournalEntry,FiscalYear,Fiscal Year
+I_JournalEntry,DocumentDate,Document Date
+I_JournalEntry,PostingDate,Posting Date
+I_JournalEntry,FiscalPeriod,Fiscal Period

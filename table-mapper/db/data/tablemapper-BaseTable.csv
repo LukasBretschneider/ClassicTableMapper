@@ -1,0 +1,5 @@
+name,description,applicationComponent,releaseState,officialSuccessor_name
+MARA,General Material Data,LO-MD-MM,none,I_Product
+MARC,Plant Data for Material,LO-MD-MM,none,I_MaterialPlant
+EKKO,Purchasing Document Header,MM-PUR,none,I_PurchasingDocument
+BKPF,Accounting Document Header,FI-GL,NOT_TO_BE_RELEASED,I_JournalEntry
