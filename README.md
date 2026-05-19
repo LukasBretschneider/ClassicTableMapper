@@ -1,3 +1,11 @@
+## Disclaimer
+This Project is provided as open-source under the MIT license.
+No Support, no SLAs and no responsibility for any errors.
+Please use at own risk.
+This project is not related or endorsed by SAP or any organisation owned by SAP.
+
+---
+
 # ClassicTableMapper
 
 ClassicTableMapper helps ABAP developers identify appropriate successor CDS Views for classic SAP database tables as part of the **Clean Core** initiative. For a given base table it shows which CDS View maps to it, how many fields are covered, and exactly which fields are (or aren't) mapped on both sides.
