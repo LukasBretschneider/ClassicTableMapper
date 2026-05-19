@@ -39,5 +39,5 @@ entity TableMapping {
     key baseTable       : Association to BaseTable;
     key successorEntity : Association to SuccessorEntity;
     key baseField       : String(30);
-        successorField  : String(120);
+    key successorField  : String(120);
 }

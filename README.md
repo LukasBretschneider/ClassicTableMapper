@@ -4,6 +4,7 @@ ClassicTableMapper helps ABAP developers identify appropriate successor CDS View
 
 ---
 
+
 ## Background
 
 SAP's Clean Core strategy encourages replacing direct database table access in ABAP code with released CDS Views. While some tables have official successor objects, finding the right one for a given use case is non-trivial — especially when you need to know how completely a view covers the fields you actually use.
@@ -51,7 +52,7 @@ http://localhost:4004/tablemapper/webapp/index.html
 
 ## Loading Your Own Data
 
-Data can be provided either via **CSV deployment** (seed data in `db/data/`) or by uploading files at runtime via the upload page (`/tablemapper/webapp/upload.html`).
+Data can be provided either via **CSV deployment** (seed data in `db/data/`) or by uploading files at runtime via the app's upload actions.
 
 ### CSV formats
 
@@ -66,7 +67,7 @@ MARA,General Material Data,LO-MD-MM,none,I_Product
 | `name` | SAP table name, e.g. `MARA` |
 | `description` | Human-readable label |
 | `applicationComponent` | SAP ACH component, e.g. `LO-MD-MM` |
-| `releaseState` | `none` or `NOT_TO_BE_RELEASED` |
+| `releaseState` | Free text, e.g. `none`, `NOT_TO_BE_RELEASED` |
 | `officialSuccessor_name` | Name of the officially recommended successor entity |
 
 ---
@@ -110,6 +111,8 @@ baseTable_name,successorEntity_name,baseField,successorField
 MARA,I_Product,MATNR,Product
 ```
 
+> **Note:** When uploading via the `uploadMappings` action, the expected column names differ: `baseTable`, `baseField`, `entity`, `entityField`.
+
 ---
 
 ## How to Use It
@@ -130,6 +133,23 @@ MARA,I_Product,MATNR,Product
 ---
 
 ## Project Structure
+
+The repository consists of two parts:
+
+### ABAP Views (`abap/`)
+
+A set of CDS views that run on top of the [CDS Analyzer](https://github.com/agraeber/cdsanalyser) by Andreas Graeber. The CDS Analyzer provides a field-level index of CDS views and their mappings to classic database tables. The views in this folder build on that foundation and extract the data needed by the CAP viewer — base tables, successor entities, field definitions, and field mappings — in the exact CSV format expected by the app.
+
+| View | Purpose |
+|---|---|
+| `ZI_CDS_BASETABLES` | Distinct base tables covered by the mapping, enriched with description, ACH component, release state, and official successor |
+| `ZI_CDS_BASEFIELDS` | All fields for those base tables (from `DD03L`), including unmapped ones |
+| `ZI_CDS_SUCC_ENTITIES` | Distinct successor CDS entities from the mapping |
+| `ZI_CDS_SUCC_FIELDS` | All fields for those successor entities |
+
+Export the results of these views as CSV and load them into the CAP app (see *Loading Your Own Data* below).
+
+### CAP Application (`table-mapper/`)
 
 ```
 table-mapper/

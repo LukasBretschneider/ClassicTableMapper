@@ -14,7 +14,7 @@ service TableMapperService @(path: '/tablemapper') {
             baseTableFieldCount            : Integer;
             successorEntityDescription          : String(100);
             successorEntityApplicationComponent : String(30);
-            successorEntityIsReleased           : Boolean;
+            successorEntityIsReleased           : String(3);
             successorEntityReleaseContract      : String(4);
             successorEntityC1Status             : String(20);
             successorEntityReleaseCriticality   : Integer;  // 3=green (released), 1=red (unreleased)

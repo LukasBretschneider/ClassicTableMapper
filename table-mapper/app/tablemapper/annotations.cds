@@ -6,9 +6,7 @@ annotate service.MappingOverview with @(
     UI.PresentationVariant: {
         GroupBy: [ baseTableName ],
         SortOrder: [
-            { Property: baseTableName,              Descending: false },
-            { Property: successorEntityIsReleased,  Descending: true  },
-            { Property: coveragePercent,             Descending: false }
+            { Property: coveragePercent, Descending: true }
         ],
         Visualizations: [ '@UI.LineItem' ]
     },

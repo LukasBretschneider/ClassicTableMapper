@@ -82,7 +82,7 @@
                     "options": {
                         "settings": {
                             "contextPath": "/MappingOverview",
-                            "initialLoad": true,
+                            "initialLoad": "Disabled",
                             "variantManagement": "Page",
                             "navigation": {
                                 "MappingOverview": {

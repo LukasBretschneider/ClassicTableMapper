@@ -4,7 +4,7 @@ module.exports = class TableMapperService extends cds.ApplicationService {
 
     async init() {
         const db = await cds.connect.to('db');
-        const { TableMapping, BaseField, SuccessorField } = db.entities('tablemapper');
+        const { TableMapping, BaseField, SuccessorField, SuccessorEntity, BaseTable } = db.entities('tablemapper');
 
         // ── MappingOverview ──────────────────────────────────────────────────
         this.on('READ', 'MappingOverview', async (req) => {
@@ -26,46 +26,52 @@ module.exports = class TableMapperService extends cds.ApplicationService {
                     'baseTable.releaseState                      as baseTableReleaseState',
                     'baseTable.officialSuccessor_name            as baseTableOfficialSuccessor',
                     'successorEntity_name                        as successorEntityName',
-                    'successorEntity.description                 as successorEntityDescription',
-                    'successorEntity.applicationComponent        as successorEntityApplicationComponent',
-                    'successorEntity.isReleased                  as successorEntityIsReleased',
-                    'successorEntity.releaseContract             as successorEntityReleaseContract',
-                    'successorEntity.c1Status                    as successorEntityC1Status',
                     'count(*) as mappedFieldCount'
                 )
                 .groupBy(
                     'baseTable_name', 'baseTable.description', 'baseTable.applicationComponent',
                     'baseTable.releaseState', 'baseTable.officialSuccessor_name',
-                    'successorEntity_name', 'successorEntity.description', 'successorEntity.applicationComponent',
-                    'successorEntity.isReleased', 'successorEntity.releaseContract', 'successorEntity.c1Status'
-                );
+                    'successorEntity_name'
+                )
+                .orderBy('baseTable_name asc');
 
             if (Object.keys(where).length) query.where(where);
 
-            const [pairs, baseFieldCounts, successorFieldCounts] = await Promise.all([
+            const [pairs, baseFieldCounts, successorFieldCounts, successorEntities] = await Promise.all([
                 db.run(query),
                 db.run(SELECT.from(BaseField).columns('baseTable_name as tableName', 'count(*) as cnt').groupBy('baseTable_name')),
-                db.run(SELECT.from(SuccessorField).columns('successorEntity_name as entityName', 'count(*) as cnt').groupBy('successorEntity_name'))
+                db.run(SELECT.from(SuccessorField).columns('successorEntity_name as entityName', 'count(*) as cnt').groupBy('successorEntity_name')),
+                db.run(SELECT.from(SuccessorEntity).columns('name', 'description', 'applicationComponent', 'isReleased', 'releaseContract', 'c1Status'))
             ]);
 
             const baseCountMap      = Object.fromEntries(baseFieldCounts.map(r => [r.tableName, r.cnt]));
             const successorCountMap = Object.fromEntries(successorFieldCounts.map(r => [r.entityName, r.cnt]));
+            const successorMap      = Object.fromEntries(successorEntities.map(e => [e.name, e]));
 
             const result = pairs.map(p => {
                 const baseTableFieldCount       = baseCountMap[p.baseTableName]      ?? 0;
                 const successorEntityFieldCount = successorCountMap[p.successorEntityName] ?? 0;
+                const succ = successorMap[p.successorEntityName] ?? {};
+                const isReleased = succ.isReleased === true || succ.isReleased === 1 || succ.isReleased === 'true';
                 const pct = baseTableFieldCount > 0
                     ? Math.round((p.mappedFieldCount / baseTableFieldCount) * 10000) / 100
                     : 0;
                 return {
                     ...p,
+                    successorEntityDescription:          succ.description          ?? null,
+                    successorEntityApplicationComponent: succ.applicationComponent ?? null,
+                    successorEntityIsReleased:           isReleased ? 'Yes' : 'No',
+                    successorEntityReleaseContract:      succ.releaseContract      ?? null,
+                    successorEntityC1Status:             succ.c1Status             ?? null,
                     baseTableFieldCount,
                     successorEntityFieldCount,
                     coveragePercent: pct,
                     coverageCriticality: pct < 10 ? 1 : pct < 50 ? 2 : 3,
-                    successorEntityReleaseCriticality: p.successorEntityIsReleased ? 3 : 1
+                    successorEntityReleaseCriticality: isReleased ? 3 : 1
                 };
-            });
+            }).sort((a, b) =>
+                a.baseTableName.localeCompare(b.baseTableName) || (b.coveragePercent - a.coveragePercent)
+            );
 
             // Single-entity read (object page) — return the object, not an array
             if (baseTableName && successorEntityName) return result[0] ?? null;
